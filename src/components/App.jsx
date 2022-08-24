@@ -2,6 +2,7 @@ import { Component } from "react";
 import { ToastContainer } from 'react-toastify';
 import { Button, Searchbar, ImageGallery, Loader, Modal } from 'components';
 import getImages from "../shared/api.js";
+import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import s from "./App.module.scss"
 
@@ -32,6 +33,16 @@ export class App extends Component {
               showBtn: false,
               arrImage: [],
             });
+            return toast.error(
+              "🌈🌈🌈 Sorry, there are no images matching your search query. Please try again", {
+              position: "top-right",
+              autoClose: 3500,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            })
           }
           this.setState({
             arrImage: [...hits],
@@ -109,7 +120,7 @@ export class App extends Component {
           { loading && <Loader /> }
           <ToastContainer />
         </div>
-        { showBtn && <Button onClickAdd={ onClickAddImg }  /> }
+        { showBtn && <Button onClickAdd={ onClickAddImg } /> }
       </>
     );
   }
