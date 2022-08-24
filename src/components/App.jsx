@@ -1,8 +1,8 @@
 import { Component } from "react";
 import { ToastContainer } from 'react-toastify';
+import { toast } from "react-toastify";
 import { Button, Searchbar, ImageGallery, Loader, Modal } from 'components';
 import getImages from "../shared/api.js";
-import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import s from "./App.module.scss"
 

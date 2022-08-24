@@ -41,6 +41,6 @@ class Modal extends Component {
 export default Modal;
 
 Modal.propTypes = {
-  onClick: PropTypes.func.isRequired,
   children: PropTypes.element.isRequired,
-};
+  onClick: PropTypes.func.isRequired
+}

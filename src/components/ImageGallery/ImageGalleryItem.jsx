@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import s from "./ImageGallaryItem.module.scss"
 
 function ImageGalleryItem({ webformat, id, largeImg, tags, renderImgInModal }) {
@@ -9,6 +10,14 @@ function ImageGalleryItem({ webformat, id, largeImg, tags, renderImgInModal }) {
         title={ largeImg } />
     </li>
   );
+}
+
+ImageGalleryItem.propTypes = {
+  id: PropTypes.number,
+  largeImg: PropTypes.string.isRequired,
+  renderImgInModal: PropTypes.string.isRequired,
+  tags: PropTypes.string.isRequired,
+  webformat: PropTypes.string.isRequired,
 }
 
 export default ImageGalleryItem;
