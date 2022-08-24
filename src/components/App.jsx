@@ -1,86 +1,116 @@
 import { Component } from "react";
-import Notiflix from 'notiflix';
-import { ContactForm, ContactList, Filter } from 'components';
-import s from "./Contacts.module.scss"
+import { ToastContainer } from 'react-toastify';
+import { Button, Searchbar, ImageGallery, Loader, Modal } from 'components';
+import getImages from "../shared/api.js";
+import 'react-toastify/dist/ReactToastify.css';
+import s from "./App.module.scss"
 
 export class App extends Component {
+
   state = {
-    contacts: [],
-    filter: '',
+    search: '',
+    arrImage: [],
+    page: 1,
+    showBtn: false,
+    loading: false,
+    showModal: false,
+    total: '',
   };
 
-  componentDidMount() {
-    const contacts = localStorage.getItem("contacts")
-    const parsedContacts = JSON.parse(contacts)
-
-
-    if (parsedContacts) {
-      this.setState({
-        contacts: parsedContacts
-      })
-    }
-
-  }
-
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.contacts !== prevState.contacts) {
-      localStorage.setItem("contacts", JSON.stringify(this.state.contacts))
+    const { search, page } = this.state;
+
+    if (search !== prevState.search) {
+      this.setState({
+        loading: true,
+      });
+      getImages(search, page)
+        .then(({ hits, total }) => {
+          if (total === 0) {
+            this.setState({
+              loading: false,
+              showBtn: false,
+              arrImage: [],
+            });
+          }
+          this.setState({
+            arrImage: [...hits],
+            total: total,
+            showBtn: true,
+            loading: false,
+          });
+        })
+        .catch(err => console.log(err));
     }
 
+    if (page !== prevState.page) {
+      this.setState({
+        loading: true,
+      });
+      getImages(search, page)
+        .then(({ hits, total }) => {
+          if (hits.length < 12) {
+            this.setState({
+              showBtn: false,
+            });
+          }
+          this.setState({
+            arrImage: [...prevState.arrImage, ...hits],
+            total: total,
+            loading: false,
+          });
+        })
+        .catch(err => console.log(err));
+    }
   }
 
-  submitDataForm = (data) => {
-    const { contacts } = this.state;
-    if (contacts.find(el => el.name === data.name)) {
-      Notiflix.Report.warning(
-        `Warning`,
-        `${data.name} is already in cotacts`,
-        'Confirm'
-      );
-      return;
-    }
-    Notiflix.Notify.success('You have a new Contact');
+  onSubmitData = dataSearch => {
+    this.setState({
+      search: dataSearch,
+    });
+  };
+
+  onClickAddImg = () => {
     this.setState(prevState => ({
-      contacts: [...prevState.contacts, data],
+      page: prevState.page + 1,
     }));
   };
 
-  removeContacts = (id) => {
-    Notiflix.Notify.failure('You delete the contact')
-    this.setState(({ contacts }) => {
-      const newBooks = contacts.filter(item => item.id !== id);
-      return {
-        contacts: newBooks,
-      }
-    })
-  }
-
-  searchName = (e) => {
-    this.setState({ filter: e.target.value.toLowerCase() });
+  onClickToggleModal = () => {
+    this.setState(prevState => ({
+      showModal: !prevState.showModal,
+    }));
   };
 
-  showContacts = () => {
-    const { contacts, filter } = this.state;
-    return contacts.filter(cont => cont.name.toLowerCase().includes(filter));
+  renderImgInModal = ({ target }) => {
+    this.onClickToggleModal();
+    const { title } = target;
+    this.setState({
+      title,
+    });
   };
-
 
   render() {
-    const { removeContacts, searchName, showContacts, submitDataForm } = this
-    const { filter } = this.state;
-
+    const { onSubmitData, onClickAddImg, renderImgInModal } = this;
+    const { arrImage, showBtn, loading, showModal, title } = this.state;
     return (
-      <div className={ s.container }>
-        <h2>PhoneBook</h2>
-        <ContactForm onSubmit={ submitDataForm } />
-        <h2>Contacts</h2>
-        <Filter value={ filter } searchName={ searchName } />
-        <ContactList
-          contacts={ showContacts() }
-          removeContacts={ removeContacts } />
-      </div>
+      <>
+        <div className={ s.app }>
+          { showModal && (
+            <Modal onClick={ this.onClickToggleModal }>
+              <img src={ title } alt="" />
+            </Modal>
+          ) }
+          <Searchbar onSubmit={ onSubmitData } />
+          <ImageGallery
+            arrImage={ arrImage }
+            renderImgInModal={ renderImgInModal }
+          />
+          { loading && <Loader /> }
+          <ToastContainer />
+        </div>
+        { showBtn && <Button onClickAdd={ onClickAddImg }  /> }
+      </>
     );
   }
 }
-
-
