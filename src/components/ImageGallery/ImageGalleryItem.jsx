@@ -15,7 +15,7 @@ function ImageGalleryItem({ webformat, id, largeImg, tags, renderImgInModal }) {
 ImageGalleryItem.propTypes = {
   id: PropTypes.number,
   largeImg: PropTypes.string.isRequired,
-  renderImgInModal: PropTypes.string.isRequired,
+  renderImgInModal: PropTypes.func,
   tags: PropTypes.string.isRequired,
   webformat: PropTypes.string.isRequired,
 }
