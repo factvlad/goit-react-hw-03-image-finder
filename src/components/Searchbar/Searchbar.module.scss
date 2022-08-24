@@ -12,7 +12,16 @@
   padding-top: 12px;
   padding-bottom: 12px;
   color: #fff;
-  background-color: #3f51b5;
+  background: linear-gradient(
+    to right,
+    red,
+    orange,
+    yellow,
+    green,
+    cyan,
+    blue,
+    violet
+  );
   box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
     0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 }
@@ -32,7 +41,7 @@
   width: 50px;
   height: 50px;
   border: 0;
-  background-image: url('https://uxwing.com/wp-content/themes/uxwing/download/user-interface/search-icon.svg');
+  background-image: url('https://uxwing.com/wp-content/themes/uxwing/download/weather/reainbow-icon.svg');
   background-size: 50%;
   background-repeat: no-repeat;
   background-position: center;
@@ -67,11 +76,14 @@
   outline: none;
   padding-left: 4px;
   padding-right: 4px;
+  color: rgb(216, 24, 152);
+  font-weight: 700;
 }
 
 .searchFormInput::placeholder {
   font: inherit;
   font-size: 18px;
+  color: rgb(218, 31, 209);
 }
 .searchbar__icon {
   width: 120px;

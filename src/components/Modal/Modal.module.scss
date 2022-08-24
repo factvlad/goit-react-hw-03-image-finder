@@ -1,4 +1,4 @@
-.backdrop {
+.bg {
   position: fixed;
   top: 0;
   left: 0;
@@ -20,4 +20,5 @@
   transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
   border: solid 2px rgb(11, 11, 11);
   outline: solid 25px rgb(255, 255, 255);
+  transition: all 0.5s;
 }

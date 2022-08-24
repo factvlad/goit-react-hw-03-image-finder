@@ -28,9 +28,9 @@ class Modal extends Component {
     }
   };
 
-  render() {  
+  render() {
     return createPortal(
-      <div className={ s.backdrop } onClick={ this.onClikCloseBackDrop }>
+      <div className={ s.bg } onClick={ this.onClikCloseBackDrop }>
         <div className={ s.modal }>{ this.props.children }</div>
       </div>,
       modal
